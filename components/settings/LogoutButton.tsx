@@ -11,7 +11,11 @@ export default function LogoutButton() {
 
   return (
     <>
-      <ListItem label="로그아웃" onClick={() => setOpen(true)} />
+      <ListItem
+        label="로그아웃"
+        style={{ color: "#FF5F5F" }}
+        onClick={() => setOpen(true)}
+      />
       <ActionSheet
         open={open}
         title="로그아웃 하시겠습니까?"

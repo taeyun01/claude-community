@@ -12,7 +12,7 @@ export default function ListItem({
   return (
     <button
       type="button"
-      className={`flex h-10 w-full items-center justify-between px-4 text-left text-sm text-gray-900 ${className ?? ""}`}
+      className={`flex h-10 w-full cursor-pointer items-center justify-between px-4 text-left text-sm text-gray-900 ${className ?? ""}`}
       {...props}
     >
       <span>{label}</span>

@@ -36,7 +36,7 @@ export default function ActionSheet({
             type="button"
             onClick={onConfirm}
             disabled={pending}
-            className="font-poppins h-11 w-full rounded-[22px] bg-brand-600 text-sm font-semibold text-white disabled:bg-brand-300"
+            className="font-poppins h-11 w-full rounded-[22px] cursor-pointer bg-brand-600 text-sm font-semibold text-white disabled:bg-brand-300"
           >
             {pending ? "처리 중..." : confirmLabel}
           </button>
@@ -44,7 +44,7 @@ export default function ActionSheet({
             type="button"
             onClick={onCancel}
             disabled={pending}
-            className="font-poppins h-11 w-full rounded-[22px] bg-[#F6F6F6] text-sm font-semibold text-gray-700"
+            className="font-poppins h-11 w-full rounded-[22px] cursor-pointer bg-[#F6F6F6] text-sm font-semibold text-gray-700"
           >
             {cancelLabel}
           </button>

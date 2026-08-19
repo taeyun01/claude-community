@@ -1,17 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// 홈/내 정보/설정은 로그인해야만 접근 가능 (design.md 화면 구조 기준 3개 탭)
-const PROTECTED_ROUTES = ["/", "/my", "/settings"];
-
-function isProtectedRoute(pathname: string) {
-  return PROTECTED_ROUTES.some((route) =>
-    route === "/"
-      ? pathname === "/"
-      : pathname === route || pathname.startsWith(`${route}/`),
-  );
-}
-
+// 경로별 접근 제어는 각 페이지(Server Component)에서 getCurrentUser()로 처리한다.
+// 여기서는 요청마다 Supabase 세션 쿠키를 갱신하는 역할만 한다.
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -38,15 +29,7 @@ export async function updateSession(request: NextRequest) {
 
   // createServerClient와 getClaims() 사이에는 다른 코드를 두지 않는다.
   // (Supabase 공식 가이드 — 세션이 예기치 않게 끊기는 문제를 막기 위함)
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
-
-  if (!user && isProtectedRoute(request.nextUrl.pathname)) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("message", "login-required");
-    return NextResponse.redirect(url);
-  }
+  await supabase.auth.getClaims();
 
   return supabaseResponse;
 }
