@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/safety-guard.sh",
+            "statusMessage": "안전가드 검사 중..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath' | { read -r f; case \"$f\" in *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs|*.json|*.css|*.md) npx prettier --write \"$f\" ;; esac; } 2>/dev/null || true",
+            "statusMessage": "Prettier 포맷 적용 중..."
+          }
+        ]
+      }
+    ]
+  }
+}

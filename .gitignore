@@ -39,6 +39,9 @@ yarn-error.log*
 # mcp config contains secrets (Supabase access token, etc.)
 .mcp.json
 
+# personal local Claude Code overrides
+.claude/settings.local.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -55,13 +55,21 @@ const TABS = [
   { href: "/settings", label: "설정", Icon: SettingsIcon },
 ] as const;
 
+// 회원가입/로그인 등 인증 화면은 하단 탭 없이 단독으로 노출됨 (design.md Signup/Login 프레임 참고)
+const HIDDEN_ROUTES = ["/signup", "/login"];
+
 export default function BottomTabNav() {
   const pathname = usePathname();
+
+  if (HIDDEN_ROUTES.some((route) => pathname.startsWith(route))) {
+    return null;
+  }
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-10 mx-auto flex h-[82px] w-full max-w-md items-start justify-around border-t border-[#EBEBEB] bg-white pt-2">
       {TABS.map(({ href, label, Icon }) => {
-        const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+        const active =
+          href === "/" ? pathname === "/" : pathname.startsWith(href);
         return (
           <Link
             key={href}
