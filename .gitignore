@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# mcp config contains secrets (Supabase access token, etc.)
+.mcp.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
