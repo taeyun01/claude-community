@@ -8,7 +8,9 @@ export default async function HomePage() {
   const [{ data: posts }, user] = await Promise.all([
     supabase
       .from("posts")
-      .select("id, title, content, created_at, profiles(nickname, avatar_url)")
+      .select(
+        "id, title, content, created_at, profiles(nickname, avatar_url), likes(user_id), comments(id, deleted_at)",
+      )
       .order("created_at", { ascending: false }),
     getCurrentUser(),
   ]);
@@ -18,18 +20,27 @@ export default async function HomePage() {
     <div className="min-h-full">
       {posts && posts.length > 0 ? (
         <div className="flex flex-col gap-8 py-6">
-          {posts.map((post) => (
-            <FeedItem
-              key={post.id}
-              id={post.id}
-              title={post.title}
-              content={post.content}
-              createdAt={post.created_at}
-              authorNickname={post.profiles?.nickname ?? "알 수 없음"}
-              authorAvatarUrl={post.profiles?.avatar_url ?? null}
-              isLoggedIn={isLoggedIn}
-            />
-          ))}
+          {posts.map((post) => {
+            const likeUserIds = post.likes?.map((like) => like.user_id) ?? [];
+            return (
+              <FeedItem
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                content={post.content}
+                createdAt={post.created_at}
+                authorNickname={post.profiles?.nickname ?? "알 수 없음"}
+                authorAvatarUrl={post.profiles?.avatar_url ?? null}
+                isLoggedIn={isLoggedIn}
+                initialLiked={!!user && likeUserIds.includes(user.id)}
+                initialCount={likeUserIds.length}
+                commentCount={
+                  post.comments?.filter((c) => c.deleted_at === null).length ??
+                  0
+                }
+              />
+            );
+          })}
         </div>
       ) : (
         <div className="flex h-full items-center justify-center p-6">

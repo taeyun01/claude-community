@@ -5,6 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
+import HeartIcon from "@/components/post/HeartIcon";
+import LikeButton from "@/components/post/LikeButton";
+import CommentIcon from "@/components/comment/CommentIcon";
 
 type FeedItemProps = {
   id: string;
@@ -14,6 +17,9 @@ type FeedItemProps = {
   authorNickname: string;
   authorAvatarUrl: string | null;
   isLoggedIn: boolean;
+  initialLiked: boolean;
+  initialCount: number;
+  commentCount: number;
 };
 
 export default function FeedItem({
@@ -24,6 +30,9 @@ export default function FeedItem({
   authorNickname,
   authorAvatarUrl,
   isLoggedIn,
+  initialLiked,
+  initialCount,
+  commentCount,
 }: FeedItemProps) {
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
@@ -59,26 +68,51 @@ export default function FeedItem({
     </>
   );
 
-  if (!isLoggedIn) {
-    return (
-      <>
+  return (
+    <div className="px-4">
+      {isLoggedIn ? (
+        <Link href={`/posts/${id}`} className="block">
+          {body}
+        </Link>
+      ) : (
         <button
           type="button"
           onClick={() => setShowLoginDialog(true)}
-          className="block w-full cursor-pointer px-4 text-left"
+          className="block w-full cursor-pointer text-left"
         >
           {body}
         </button>
-        {showLoginDialog && (
-          <RequireLoginDialog onCancel={() => setShowLoginDialog(false)} />
+      )}
+      <div className="mt-3 flex items-center gap-4">
+        {isLoggedIn ? (
+          <LikeButton
+            postId={id}
+            initialLiked={initialLiked}
+            initialCount={initialCount}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowLoginDialog(true)}
+            aria-label="좋아요"
+            className="flex cursor-pointer items-center gap-1.5"
+          >
+            <HeartIcon filled={false} />
+            {initialCount > 0 && (
+              <span className="text-sm text-gray-500">{initialCount}</span>
+            )}
+          </button>
         )}
-      </>
-    );
-  }
-
-  return (
-    <Link href={`/posts/${id}`} className="block px-4">
-      {body}
-    </Link>
+        <div className="flex items-center gap-1.5">
+          <CommentIcon />
+          {commentCount > 0 && (
+            <span className="text-sm text-gray-500">{commentCount}</span>
+          )}
+        </div>
+      </div>
+      {showLoginDialog && (
+        <RequireLoginDialog onCancel={() => setShowLoginDialog(false)} />
+      )}
+    </div>
   );
 }

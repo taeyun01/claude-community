@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           content: string;
           created_at: string;
+          deleted_at: string | null;
           id: string;
           post_id: string;
           user_id: string;
@@ -25,6 +26,7 @@ export type Database = {
         Insert: {
           content: string;
           created_at?: string;
+          deleted_at?: string | null;
           id?: string;
           post_id: string;
           user_id: string;
@@ -32,6 +34,7 @@ export type Database = {
         Update: {
           content?: string;
           created_at?: string;
+          deleted_at?: string | null;
           id?: string;
           post_id?: string;
           user_id?: string;
