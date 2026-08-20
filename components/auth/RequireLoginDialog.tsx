@@ -3,7 +3,13 @@
 import { useRouter } from "next/navigation";
 import ActionSheet from "@/components/ui/ActionSheet";
 
-export default function RequireLoginDialog() {
+type RequireLoginDialogProps = {
+  onCancel?: () => void;
+};
+
+export default function RequireLoginDialog({
+  onCancel,
+}: RequireLoginDialogProps) {
   const router = useRouter();
 
   return (
@@ -13,7 +19,7 @@ export default function RequireLoginDialog() {
       confirmLabel="로그인"
       cancelLabel="취소"
       onConfirm={() => router.push("/login")}
-      onCancel={() => router.push("/")}
+      onCancel={onCancel ?? (() => router.push("/"))}
     />
   );
 }

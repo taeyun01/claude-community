@@ -1,13 +1,30 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
+
+type HeaderAction = {
+  label: string;
+  onClick?: () => void;
+  type?: "button" | "submit";
+  disabled?: boolean;
+};
 
 type HeaderProps = {
   title: string;
   showBack?: boolean;
+  backHref?: string;
+  action?: HeaderAction;
+  rightSlot?: ReactNode;
 };
 
-export default function Header({ title, showBack = true }: HeaderProps) {
+export default function Header({
+  title,
+  showBack = true,
+  backHref,
+  action,
+  rightSlot,
+}: HeaderProps) {
   const router = useRouter();
 
   return (
@@ -15,7 +32,7 @@ export default function Header({ title, showBack = true }: HeaderProps) {
       {showBack ? (
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={() => (backHref ? router.push(backHref) : router.back())}
           aria-label="뒤로가기"
           className="flex h-8 w-8 items-center justify-center"
         >
@@ -38,7 +55,20 @@ export default function Header({ title, showBack = true }: HeaderProps) {
       <h1 className="font-poppins flex-1 text-center text-base font-semibold text-gray-900">
         {title}
       </h1>
-      <div className="w-8" />
+      {rightSlot ? (
+        rightSlot
+      ) : action ? (
+        <button
+          type={action.type ?? "button"}
+          onClick={action.onClick}
+          disabled={action.disabled}
+          className="font-poppins cursor-pointer px-1 text-sm font-semibold text-brand-600 disabled:text-brand-300"
+        >
+          {action.label}
+        </button>
+      ) : (
+        <div className="w-8" />
+      )}
     </header>
   );
 }

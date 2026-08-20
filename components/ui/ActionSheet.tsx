@@ -20,7 +20,7 @@ export default function ActionSheet({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-20 mx-auto flex w-full max-w-md items-end">
+    <div className="fixed inset-0 z-30 mx-auto flex w-full max-w-md items-end">
       <button
         type="button"
         aria-label="닫기"
