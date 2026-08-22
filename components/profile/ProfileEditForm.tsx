@@ -57,7 +57,7 @@ export default function ProfileEditForm({
             ref={fileInputRef}
             type="file"
             name="avatar"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/webp,image/svg+xml"
             onChange={handleFileChange}
             className="hidden"
           />

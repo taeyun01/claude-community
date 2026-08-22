@@ -15,6 +15,12 @@ export type ProfileState = {
 };
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/svg+xml",
+];
 
 export async function updateProfile(
   _prevState: ProfileState,
@@ -51,6 +57,12 @@ export async function updateProfile(
   let avatarUrl: string | undefined;
 
   if (avatar instanceof File && avatar.size > 0) {
+    if (!ALLOWED_AVATAR_TYPES.includes(avatar.type)) {
+      return {
+        errors: { avatar: ["JPG, PNG, WebP, SVG 형식만 업로드할 수 있어요."] },
+      };
+    }
+
     if (avatar.size > MAX_AVATAR_SIZE) {
       return { errors: { avatar: ["이미지 용량은 5MB 이하여야 합니다."] } };
     }
