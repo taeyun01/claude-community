@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
-import { votePoll } from "@/lib/actions/polls";
+import { cancelVote, votePoll } from "@/lib/actions/polls";
 
 type PollOption = {
   id: string;
@@ -74,6 +74,23 @@ export default function PollCard({
     });
   };
 
+  const handleCancelVote = () => {
+    const cancelledOptionId = myVote;
+    if (!cancelledOptionId) return;
+    setMyVote(null);
+    setVoteCount((prev) => prev - 1);
+    setOptionCounts((prev) =>
+      prev.map((option) =>
+        option.id === cancelledOptionId
+          ? { ...option, count: option.count - 1 }
+          : option,
+      ),
+    );
+    startTransition(() => {
+      cancelVote(pollId, postId);
+    });
+  };
+
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-[#EBEBEB] p-4">
       <p className="text-sm font-semibold text-gray-900">{question}</p>
@@ -100,9 +117,17 @@ export default function PollCard({
             <button
               key={option.id}
               type="button"
-              onClick={() => handleVote(option.id)}
-              disabled={isLoggedIn}
-              className="relative w-full overflow-hidden rounded-xl border border-[#EBEBEB] bg-[#F6F6F6] px-4 py-3 text-left disabled:cursor-default"
+              onClick={() => {
+                if (!isLoggedIn) {
+                  setShowLoginDialog(true);
+                  return;
+                }
+                if (isMine) {
+                  handleCancelVote();
+                }
+              }}
+              disabled={isLoggedIn && !isMine}
+              className="relative w-full cursor-pointer overflow-hidden rounded-xl border border-[#EBEBEB] bg-[#F6F6F6] px-4 py-3 text-left disabled:cursor-default"
             >
               <div
                 className="absolute inset-y-0 left-0 bg-brand-100"
