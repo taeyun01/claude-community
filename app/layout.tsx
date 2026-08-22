@@ -16,9 +16,34 @@ const poppins = Poppins({
   weight: ["400", "600"],
 });
 
+const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+const SITE_TITLE = "도란도란 커뮤니티";
+const SITE_DESCRIPTION =
+  "소소한 일상 이야기부터 유용한 정보와 재미있는 투표까지!";
+
 export const metadata: Metadata = {
-  title: "커뮤니티",
-  description: "모바일 웹 커뮤니티 서비스",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  icons: {
+    icon: "/favicon.png",
+  },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1730,
+        height: 909,
+      },
+    ],
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
