@@ -100,21 +100,23 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
                 className="h-10 w-10 rounded-full object-cover"
               />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-600">
+              <div className="from-brand-100 to-brand-200 ring-brand-200 text-brand-600 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-sm font-semibold ring-1">
                 {authorNickname.slice(0, 1)}
               </div>
             )}
             <div className="flex flex-col">
-              <span className="font-poppins text-sm font-semibold text-gray-900">
+              <span className="text-ink-900 font-poppins text-sm font-semibold">
                 {authorNickname}
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-ink-600 text-xs">
                 {formatRelativeTime(post.created_at)}
               </span>
             </div>
           </Link>
-          <h1 className="text-lg font-semibold text-gray-900">{post.title}</h1>
-          <p className="text-sm leading-relaxed whitespace-pre-line text-gray-700">
+          <h1 className="text-ink-900 font-poppins text-xl font-semibold">
+            {post.title}
+          </h1>
+          <p className="text-ink-900/80 text-[15px] leading-relaxed whitespace-pre-line">
             {post.content}
           </p>
           {poll && (
@@ -128,7 +130,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
               isLoggedIn={isLoggedIn}
             />
           )}
-          <div className="flex items-center gap-4 border-t border-[#EBEBEB] pt-3">
+          <div className="border-line flex items-center gap-4 border-t pt-3">
             <LikeButton
               postId={post.id}
               initialLiked={isLiked}
@@ -138,14 +140,14 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
             <div className="flex items-center gap-1.5">
               <CommentIcon />
               {visibleCommentCount > 0 && (
-                <span className="text-sm text-gray-500">
+                <span className="text-ink-600 text-sm">
                   {visibleCommentCount}
                 </span>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-2 border-t border-[#EBEBEB]">
+        <div className="border-line mt-2 border-t">
           <CommentList postId={post.id} comments={commentList} />
         </div>
       </div>

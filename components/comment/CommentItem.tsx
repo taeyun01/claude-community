@@ -36,23 +36,25 @@ export default function CommentItem({
           className="h-8 w-8 shrink-0 rounded-full object-cover"
         />
       ) : (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-semibold text-brand-600">
+        <div className="from-brand-100 to-brand-200 ring-brand-200 text-brand-600 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-xs font-semibold ring-1">
           {authorNickname.slice(0, 1)}
         </div>
       )}
       <div className="flex flex-1 flex-col">
         <div className="flex items-center gap-1.5">
-          <span className="font-poppins text-sm font-semibold text-gray-900">
+          <span className="text-ink-900 font-poppins text-sm font-semibold">
             {authorNickname}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-ink-600 text-xs">
             {formatRelativeTime(createdAt)}
           </span>
         </div>
         {isDeleted ? (
-          <p className="text-sm text-gray-400 italic">삭제된 댓글입니다.</p>
+          <p className="text-ink-600 text-sm italic">삭제된 댓글입니다.</p>
         ) : (
-          <p className="text-sm whitespace-pre-line text-gray-700">{content}</p>
+          <p className="text-ink-900/80 text-sm whitespace-pre-line">
+            {content}
+          </p>
         )}
       </div>
       {isOwner && !isDeleted && <CommentMenu commentId={id} postId={postId} />}

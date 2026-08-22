@@ -37,10 +37,10 @@ export default function FeedItem({
   hasPoll = false,
 }: FeedItemProps) {
   return (
-    <div className="px-4">
+    <div className="border-line bg-surface shadow-card mx-4 flex flex-col gap-3 rounded-2xl border p-4">
       <Link
         href={`/profile/${authorId}`}
-        className="mb-2 flex w-fit items-center gap-2"
+        className="flex w-fit items-center gap-2"
       >
         {authorAvatarUrl ? (
           <Image
@@ -51,29 +51,29 @@ export default function FeedItem({
             className="h-10 w-10 rounded-full object-cover"
           />
         ) : (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-600">
+          <div className="from-brand-100 to-brand-200 ring-brand-200 text-brand-600 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-sm font-semibold ring-1">
             {authorNickname.slice(0, 1)}
           </div>
         )}
         <div className="flex flex-col">
-          <span className="font-poppins text-sm font-semibold text-gray-900">
+          <span className="text-ink-900 font-poppins text-sm font-semibold">
             {authorNickname}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-ink-600 text-xs">
             {formatRelativeTime(createdAt)}
           </span>
         </div>
       </Link>
       <Link href={`/posts/${id}`} className="block">
-        <h2 className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-gray-900">
+        <h2 className="text-ink-900 font-poppins mb-1 flex items-center gap-1.5 text-[15px] font-semibold">
           {hasPoll && <PollIcon />}
           {title}
         </h2>
-        <p className="line-clamp-3 text-sm leading-relaxed whitespace-pre-line text-gray-700">
+        <p className="text-ink-900/75 line-clamp-3 text-sm leading-relaxed whitespace-pre-line">
           {content}
         </p>
       </Link>
-      <div className="mt-3 flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <LikeButton
           postId={id}
           initialLiked={initialLiked}
@@ -83,7 +83,7 @@ export default function FeedItem({
         <div className="flex items-center gap-1.5">
           <CommentIcon />
           {commentCount > 0 && (
-            <span className="text-sm text-gray-500">{commentCount}</span>
+            <span className="text-ink-600 text-sm">{commentCount}</span>
           )}
         </div>
       </div>

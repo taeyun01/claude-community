@@ -6,7 +6,7 @@ export default function WriteButton() {
       <Link
         href="/posts/new"
         aria-label="글쓰기"
-        className="pointer-events-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-600 shadow-lg"
+        className="pointer-events-auto shadow-fab bg-brand-600 flex h-16 w-16 items-center justify-center rounded-full"
       >
         <svg
           width="24"

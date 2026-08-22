@@ -48,19 +48,19 @@ export default async function ProfilePage(props: PageProps<"/profile/[id]">) {
               className="h-24 w-24 rounded-full object-cover"
             />
           ) : (
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-brand-100 text-2xl font-semibold text-brand-600">
+            <div className="from-brand-100 to-brand-200 ring-brand-200 text-brand-600 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br text-2xl font-semibold ring-1">
               {nickname.slice(0, 1)}
             </div>
           )}
-          <span className="font-poppins text-lg font-semibold text-gray-900">
+          <span className="text-ink-900 font-poppins text-lg font-semibold">
             {nickname}
           </span>
         </div>
-        <div className="border-t border-[#EBEBEB] px-4 pt-4 pb-2">
-          <h2 className="text-sm font-semibold text-gray-700">작성한 글</h2>
+        <div className="border-line border-t px-4 pt-4 pb-2">
+          <h2 className="text-ink-600 text-sm font-semibold">작성한 글</h2>
         </div>
         {posts && posts.length > 0 ? (
-          <div className="flex flex-col gap-8 py-4">
+          <div className="flex flex-col gap-4 py-4">
             {posts.map((post) => {
               const likeUserIds = post.likes?.map((like) => like.user_id) ?? [];
               return (
@@ -86,7 +86,7 @@ export default async function ProfilePage(props: PageProps<"/profile/[id]">) {
             })}
           </div>
         ) : (
-          <p className="px-4 py-8 text-center text-sm text-gray-500">
+          <p className="text-ink-600 px-4 py-8 text-center text-sm">
             아직 작성한 글이 없어요.
           </p>
         )}

@@ -27,8 +27,8 @@ export default function ActionSheet({
         onClick={onCancel}
         className="absolute inset-0 bg-black/40"
       />
-      <div className="relative z-10 w-full rounded-t-2xl bg-white px-4 pb-6 pt-5">
-        <p className="mb-4 text-center text-sm font-medium text-gray-900">
+      <div className="bg-surface relative z-10 w-full rounded-t-2xl px-4 pt-5 pb-6">
+        <p className="text-ink-900 mb-4 text-center text-sm font-medium">
           {title}
         </p>
         <div className="flex flex-col gap-2">
@@ -44,7 +44,7 @@ export default function ActionSheet({
             type="button"
             onClick={onCancel}
             disabled={pending}
-            className="font-poppins h-11 w-full rounded-[22px] cursor-pointer bg-[#F6F6F6] text-sm font-semibold text-gray-700"
+            className="font-poppins text-ink-600 h-11 w-full cursor-pointer rounded-[22px] bg-[#FAF6F2] text-sm font-semibold"
           >
             {cancelLabel}
           </button>

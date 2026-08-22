@@ -37,10 +37,10 @@ export default function CommentInput({
             setShowLoginDialog(true);
           }
         }}
-        className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-md border-t border-[#EBEBEB] bg-white px-4 py-3"
+        className="border-line bg-surface fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-md border-t px-4 py-3"
       >
         {showError && (
-          <p className="absolute -top-7 left-4 rounded-full bg-white px-2 py-1 text-xs text-[#FF5F5F] shadow-sm">
+          <p className="bg-surface absolute -top-7 left-4 rounded-full px-2 py-1 text-xs text-[#FF5F5F] shadow-sm">
             {state.error}
           </p>
         )}
