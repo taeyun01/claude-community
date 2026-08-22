@@ -4,6 +4,7 @@ import Image from "next/image";
 import Header from "@/components/nav/Header";
 import PostMenu from "@/components/post/PostMenu";
 import LikeButton from "@/components/post/LikeButton";
+import PollCard from "@/components/post/PollCard";
 import CommentIcon from "@/components/comment/CommentIcon";
 import CommentList from "@/components/comment/CommentList";
 import CommentInput from "@/components/comment/CommentInput";
@@ -14,23 +15,31 @@ import { getCurrentUser } from "@/lib/dal";
 export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
   const { id } = await props.params;
   const supabase = await createClient();
-  const [{ data: post }, { data: comments }, user] = await Promise.all([
-    supabase
-      .from("posts")
-      .select(
-        "id, title, content, created_at, user_id, profiles(nickname, avatar_url), likes(user_id)",
-      )
-      .eq("id", id)
-      .maybeSingle(),
-    supabase
-      .from("comments")
-      .select(
-        "id, content, created_at, deleted_at, user_id, profiles(nickname, avatar_url)",
-      )
-      .eq("post_id", id)
-      .order("created_at", { ascending: false }),
-    getCurrentUser(),
-  ]);
+  const [{ data: post }, { data: comments }, { data: poll }, user] =
+    await Promise.all([
+      supabase
+        .from("posts")
+        .select(
+          "id, title, content, created_at, user_id, profiles(nickname, avatar_url), likes(user_id)",
+        )
+        .eq("id", id)
+        .maybeSingle(),
+      supabase
+        .from("comments")
+        .select(
+          "id, content, created_at, deleted_at, user_id, profiles(nickname, avatar_url)",
+        )
+        .eq("post_id", id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("polls")
+        .select(
+          "id, question, poll_options(id, label, created_at), poll_votes(option_id, user_id)",
+        )
+        .eq("post_id", id)
+        .maybeSingle(),
+      getCurrentUser(),
+    ]);
 
   if (!post) {
     notFound();
@@ -55,6 +64,19 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
   const visibleCommentCount = commentList.filter(
     (comment) => comment.deleted_at === null,
   ).length;
+
+  const pollOptions = (poll?.poll_options ?? [])
+    .slice()
+    .sort((a, b) => a.created_at.localeCompare(b.created_at))
+    .map((option) => ({
+      id: option.id,
+      label: option.label,
+      count:
+        poll?.poll_votes.filter((v) => v.option_id === option.id).length ?? 0,
+    }));
+  const pollMyOptionId =
+    (user && poll?.poll_votes.find((v) => v.user_id === user.id)?.option_id) ||
+    null;
 
   return (
     <div className="flex h-full flex-col">
@@ -95,6 +117,17 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
           <p className="text-sm leading-relaxed whitespace-pre-line text-gray-700">
             {post.content}
           </p>
+          {poll && (
+            <PollCard
+              pollId={poll.id}
+              postId={post.id}
+              question={poll.question}
+              options={pollOptions}
+              totalVotes={poll.poll_votes.length}
+              myOptionId={pollMyOptionId}
+              isLoggedIn={isLoggedIn}
+            />
+          )}
           <div className="flex items-center gap-4 border-t border-[#EBEBEB] pt-3">
             <LikeButton
               postId={post.id}

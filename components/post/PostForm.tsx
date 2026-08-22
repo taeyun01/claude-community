@@ -134,7 +134,7 @@ export default function PostForm({
               onClick={() => setPollEnabled(true)}
               className="w-fit cursor-pointer rounded-full border border-brand-600 px-3 py-1 text-xs font-medium text-brand-600"
             >
-              투표 추가
+              + 투표 추가
             </button>
           ))}
         {state.message && (
