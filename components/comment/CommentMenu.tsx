@@ -41,7 +41,7 @@ export default function CommentMenu({ commentId, postId }: CommentMenuProps) {
         <button
           type="button"
           onClick={() => setMenuOpen(false)}
-          className="mt-2 flex h-12 w-full cursor-pointer items-center border-t border-[#EBEBEB] px-4 text-left text-sm text-gray-500"
+          className="border-line mt-2 flex h-12 w-full cursor-pointer items-center border-t px-4 text-left text-sm text-gray-500"
         >
           취소
         </button>

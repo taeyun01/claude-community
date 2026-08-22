@@ -44,7 +44,7 @@ export default function ActionSheet({
             type="button"
             onClick={onCancel}
             disabled={pending}
-            className="font-poppins text-ink-600 h-11 w-full cursor-pointer rounded-[22px] bg-[#FAF6F2] text-sm font-semibold"
+            className="font-poppins text-ink-600 bg-field h-11 w-full cursor-pointer rounded-[22px] text-sm font-semibold"
           >
             {cancelLabel}
           </button>

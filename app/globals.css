@@ -10,7 +10,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-ibm-plex-sans);
   --font-poppins: var(--font-poppins);
+}
 
+/* 주의: @theme inline은 선언한 값을 유틸리티 CSS에 리터럴로 박아 넣어서,
+   런타임에 :root[data-theme="dark"]로 변수를 재정의해도 반영되지 않는다.
+   다크모드 토글로 바뀌어야 하는 토큰은 반드시 inline이 아닌 이 블록에 둘 것
+   (var() 참조가 유지되어야 [data-theme="dark"] 재정의가 실제로 적용됨) */
+@theme {
   /* design.md 3장 Brand/Orange */
   --color-brand-100: #fff7f1;
   --color-brand-200: #ffdec6;
@@ -23,15 +29,33 @@
   --color-line: #ece3d9;
   --color-ink-900: #241c17;
   --color-ink-600: #7c6f63;
+  --color-field: #faf6f2;
 
   --shadow-card:
     0 1px 2px rgba(36, 28, 23, 0.04), 0 10px 24px -14px rgba(36, 28, 23, 0.18);
   --shadow-fab: 0 12px 22px -8px rgba(255, 107, 87, 0.45);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 다크모드: prefers-color-scheme이 아니라 설정 탭에서 고른 값(html[data-theme])만 따름.
+   기본값은 라이트모드이고, /settings의 토글이 이 attribute와 theme 쿠키를 함께 설정함 */
+:root[data-theme="dark"] {
+  --background: #14100d;
+  --foreground: #f3ece3;
+
+  --color-gray-100: #241d17;
+  --color-gray-400: #6e6255;
+  --color-gray-500: #9c8f81;
+  --color-gray-700: #c9bcae;
+  --color-gray-900: #f3ece3;
+
+  --color-brand-100: #3a2419;
+  --color-brand-200: #5a3420;
+  --color-brand-300: #8a4a2a;
+  --color-brand-600: #ff6b57;
+
+  --color-surface: #1e1812;
+  --color-line: #3a2f24;
+  --color-ink-900: #f3ece3;
+  --color-ink-600: #b4a99b;
+  --color-field: #241d17;
 }

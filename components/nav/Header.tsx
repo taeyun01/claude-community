@@ -45,7 +45,7 @@ export default function Header({
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#241C17"
+            stroke="var(--color-ink-900)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

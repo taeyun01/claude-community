@@ -24,7 +24,7 @@ export default function Textarea({
       )}
       <textarea
         id={id}
-        className={`text-ink-900 min-h-[85px] w-full resize-none rounded-2xl bg-[#FAF6F2] px-4 py-3 text-sm outline-none placeholder:text-[#B3A99C] focus:ring-2 focus:ring-brand-600 ${
+        className={`text-ink-900 bg-field min-h-[85px] w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none placeholder:text-[#B3A99C] focus:ring-2 focus:ring-brand-600 ${
           error ? "ring-2 ring-[#FF5F5F]" : ""
         } ${className ?? ""}`}
         {...props}

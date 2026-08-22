@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Poppins } from "next/font/google";
 import BottomTabNav from "@/components/BottomTabNav";
+import { getTheme } from "@/lib/getTheme";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -20,10 +21,13 @@ export const metadata: Metadata = {
   description: "모바일 웹 커뮤니티 서비스",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const theme = await getTheme();
+
   return (
     <html
       lang="ko"
+      data-theme={theme}
       className={`${ibmPlexSans.variable} ${poppins.variable} antialiased`}
     >
       <body className="flex min-h-screen justify-center bg-gray-100">

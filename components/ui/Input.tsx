@@ -24,7 +24,7 @@ export default function Input({
       )}
       <input
         id={id}
-        className={`text-ink-900 h-11 w-full rounded-[22px] bg-[#FAF6F2] px-4 text-sm outline-none placeholder:text-[#B3A99C] focus:ring-2 focus:ring-brand-600 ${
+        className={`text-ink-900 bg-field h-11 w-full rounded-[22px] px-4 text-sm outline-none placeholder:text-[#B3A99C] focus:ring-2 focus:ring-brand-600 ${
           error ? "ring-2 ring-[#FF5F5F]" : ""
         } ${className ?? ""}`}
         {...props}

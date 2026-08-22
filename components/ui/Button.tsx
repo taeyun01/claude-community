@@ -12,7 +12,7 @@ export default function Button({
 }: ButtonProps) {
   const variantClass =
     variant === "outlined"
-      ? "border border-brand-600 bg-white text-brand-600"
+      ? "border border-brand-600 bg-surface text-brand-600"
       : disabled
         ? "bg-brand-300 text-white"
         : "bg-brand-600 text-white active:bg-brand-600/90";
