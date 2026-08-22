@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { setTheme as persistTheme } from "@/lib/actions/theme";
 import { THEME_COOKIE, type Theme } from "@/lib/theme";
 
 export default function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [, startTransition] = useTransition();
   const isDark = theme === "dark";
 
   const toggle = () => {
@@ -12,6 +14,9 @@ export default function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
     setTheme(next);
     document.documentElement.dataset.theme = next;
     document.cookie = `${THEME_COOKIE}=${next}; path=/; max-age=31536000; SameSite=Lax`;
+    startTransition(() => {
+      persistTheme(next);
+    });
   };
 
   return (
