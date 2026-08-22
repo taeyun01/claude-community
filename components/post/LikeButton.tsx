@@ -1,14 +1,9 @@
 "use client";
 
-import { useOptimistic, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toggleLike } from "@/lib/actions/likes";
 import HeartIcon from "@/components/post/HeartIcon";
 import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
-
-type LikeState = {
-  liked: boolean;
-  count: number;
-};
 
 type LikeButtonProps = {
   postId: string;
@@ -23,10 +18,8 @@ export default function LikeButton({
   initialCount,
   isLoggedIn,
 }: LikeButtonProps) {
-  const [state, setOptimisticState] = useOptimistic<LikeState, LikeState>(
-    { liked: initialLiked, count: initialCount },
-    (_current, next) => next,
-  );
+  const [liked, setLiked] = useState(initialLiked);
+  const [count, setCount] = useState(initialCount);
   const [, startTransition] = useTransition();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
 
@@ -35,13 +28,11 @@ export default function LikeButton({
       setShowLoginDialog(true);
       return;
     }
-    const next: LikeState = {
-      liked: !state.liked,
-      count: state.count + (state.liked ? -1 : 1),
-    };
-    startTransition(async () => {
-      setOptimisticState(next);
-      await toggleLike(postId);
+    const nextLiked = !liked;
+    setLiked(nextLiked);
+    setCount((prev) => prev + (nextLiked ? 1 : -1));
+    startTransition(() => {
+      toggleLike(postId);
     });
   };
 
@@ -50,16 +41,16 @@ export default function LikeButton({
       <button
         type="button"
         onClick={handleClick}
-        aria-pressed={state.liked}
+        aria-pressed={liked}
         aria-label="좋아요"
         className="flex cursor-pointer items-center gap-1.5"
       >
-        <HeartIcon filled={state.liked} />
-        {state.count > 0 && (
+        <HeartIcon filled={liked} />
+        {count > 0 && (
           <span
-            className={`text-sm ${state.liked ? "text-brand-600" : "text-gray-500"}`}
+            className={`text-sm ${liked ? "text-brand-600" : "text-gray-500"}`}
           >
-            {state.count}
+            {count}
           </span>
         )}
       </button>
