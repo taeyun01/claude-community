@@ -16,6 +16,7 @@ type HeaderProps = {
   backHref?: string;
   action?: HeaderAction;
   rightSlot?: ReactNode;
+  leftSlot?: ReactNode;
 };
 
 export default function Header({
@@ -24,12 +25,15 @@ export default function Header({
   backHref,
   action,
   rightSlot,
+  leftSlot,
 }: HeaderProps) {
   const router = useRouter();
 
   return (
     <header className="flex h-14 items-center border-b border-[#EBEBEB] px-4">
-      {showBack ? (
+      {leftSlot ? (
+        leftSlot
+      ) : showBack ? (
         <button
           type="button"
           onClick={() => (backHref ? router.push(backHref) : router.back())}
