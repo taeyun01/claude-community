@@ -33,6 +33,9 @@ export default function PostForm({
     title: initialTitle,
     content: initialContent,
   });
+  const [pollEnabled, setPollEnabled] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState("");
+  const [pollOptions, setPollOptions] = useState(["", ""]);
 
   return (
     <form action={formAction} className="flex flex-1 flex-col">
@@ -66,6 +69,74 @@ export default function PostForm({
             setValues((prev) => ({ ...prev, content: e.target.value }))
           }
         />
+        {mode === "create" &&
+          (pollEnabled ? (
+            <div className="flex flex-col gap-3 rounded-2xl border border-[#EBEBEB] p-4">
+              <input type="hidden" name="pollEnabled" value="true" />
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-900">
+                  투표
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPollEnabled(false);
+                    setPollQuestion("");
+                    setPollOptions(["", ""]);
+                  }}
+                  className="cursor-pointer text-xs text-gray-500"
+                >
+                  삭제
+                </button>
+              </div>
+              <Input
+                id="pollQuestion"
+                name="pollQuestion"
+                placeholder="투표 질문을 입력해주세요"
+                error={state.errors?.pollQuestion?.[0]}
+                value={pollQuestion}
+                onChange={(e) => setPollQuestion(e.target.value)}
+              />
+              <div className="flex flex-col gap-2">
+                {pollOptions.map((option, index) => (
+                  <Input
+                    key={index}
+                    id={`pollOption-${index}`}
+                    name="pollOptions"
+                    placeholder={`선택지 ${index + 1}`}
+                    value={option}
+                    onChange={(e) =>
+                      setPollOptions((prev) =>
+                        prev.map((value, i) =>
+                          i === index ? e.target.value : value,
+                        ),
+                      )
+                    }
+                  />
+                ))}
+              </div>
+              {state.errors?.pollOptions?.[0] && (
+                <p className="text-xs text-[#FF5F5F]">
+                  {state.errors.pollOptions[0]}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setPollOptions((prev) => [...prev, ""])}
+                className="w-fit cursor-pointer text-xs font-medium text-brand-600"
+              >
+                선택지 추가
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setPollEnabled(true)}
+              className="w-fit cursor-pointer rounded-full border border-brand-600 px-3 py-1 text-xs font-medium text-brand-600"
+            >
+              투표 추가
+            </button>
+          ))}
         {state.message && (
           <p className="text-sm text-[#FF5F5F]" aria-live="polite">
             {state.message}

@@ -9,6 +9,8 @@ export type PostState = {
   errors?: {
     title?: string[];
     content?: string[];
+    pollQuestion?: string[];
+    pollOptions?: string[];
   };
   message?: string;
 };
@@ -31,15 +33,53 @@ export async function createPost(
     return { errors: validated.error.flatten().fieldErrors };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from("posts").insert({
-    user_id: user.id,
-    title: validated.data.title,
-    content: validated.data.content,
-  });
+  const pollEnabled = formData.get("pollEnabled") === "true";
+  const pollQuestion = String(formData.get("pollQuestion") ?? "").trim();
+  const pollOptions = formData
+    .getAll("pollOptions")
+    .map((value) => String(value).trim())
+    .filter((value) => value.length > 0);
 
-  if (error) {
+  if (pollEnabled) {
+    const errors: NonNullable<PostState["errors"]> = {};
+    if (!pollQuestion) {
+      errors.pollQuestion = ["투표 질문을 입력해주세요."];
+    }
+    if (pollOptions.length < 2) {
+      errors.pollOptions = ["선택지를 2개 이상 입력해주세요."];
+    }
+    if (Object.keys(errors).length > 0) {
+      return { errors };
+    }
+  }
+
+  const supabase = await createClient();
+  const { data: post, error } = await supabase
+    .from("posts")
+    .insert({
+      user_id: user.id,
+      title: validated.data.title,
+      content: validated.data.content,
+    })
+    .select("id")
+    .single();
+
+  if (error || !post) {
     return { message: "글 작성 중 오류가 발생했습니다. 다시 시도해주세요." };
+  }
+
+  if (pollEnabled) {
+    const { data: poll } = await supabase
+      .from("polls")
+      .insert({ post_id: post.id, question: pollQuestion })
+      .select("id")
+      .single();
+
+    if (poll) {
+      await supabase
+        .from("poll_options")
+        .insert(pollOptions.map((label) => ({ poll_id: poll.id, label })));
+    }
   }
 
   redirect("/");

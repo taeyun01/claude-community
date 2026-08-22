@@ -92,6 +92,110 @@ export type Database = {
           },
         ];
       };
+      poll_options: {
+        Row: {
+          created_at: string;
+          id: string;
+          label: string;
+          poll_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          label: string;
+          poll_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          label?: string;
+          poll_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "poll_options_poll_id_fkey";
+            columns: ["poll_id"];
+            isOneToOne: false;
+            referencedRelation: "polls";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      poll_votes: {
+        Row: {
+          created_at: string;
+          id: string;
+          option_id: string;
+          poll_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          option_id: string;
+          poll_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          option_id?: string;
+          poll_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "poll_votes_option_id_poll_id_fkey";
+            columns: ["option_id", "poll_id"];
+            isOneToOne: false;
+            referencedRelation: "poll_options";
+            referencedColumns: ["id", "poll_id"];
+          },
+          {
+            foreignKeyName: "poll_votes_poll_id_fkey";
+            columns: ["poll_id"];
+            isOneToOne: false;
+            referencedRelation: "polls";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "poll_votes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      polls: {
+        Row: {
+          created_at: string;
+          id: string;
+          post_id: string;
+          question: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          post_id: string;
+          question: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          post_id?: string;
+          question?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "polls_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       posts: {
         Row: {
           content: string;
