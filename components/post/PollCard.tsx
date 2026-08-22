@@ -130,7 +130,7 @@ export default function PollCard({
               className="relative w-full cursor-pointer overflow-hidden rounded-xl border border-[#EBEBEB] bg-[#F6F6F6] px-4 py-3 text-left disabled:cursor-default"
             >
               <div
-                className="absolute inset-y-0 left-0 bg-brand-100"
+                className="absolute inset-y-0 left-0 bg-brand-200"
                 style={{ width: `${percent}%` }}
               />
               <div className="relative flex items-center justify-between gap-2">

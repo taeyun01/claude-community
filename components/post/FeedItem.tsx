@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import LikeButton from "@/components/post/LikeButton";
+import PollIcon from "@/components/post/PollIcon";
 import CommentIcon from "@/components/comment/CommentIcon";
 
 type FeedItemProps = {
@@ -18,6 +19,7 @@ type FeedItemProps = {
   initialLiked: boolean;
   initialCount: number;
   commentCount: number;
+  hasPoll?: boolean;
 };
 
 export default function FeedItem({
@@ -32,6 +34,7 @@ export default function FeedItem({
   initialLiked,
   initialCount,
   commentCount,
+  hasPoll = false,
 }: FeedItemProps) {
   return (
     <div className="px-4">
@@ -62,7 +65,10 @@ export default function FeedItem({
         </div>
       </Link>
       <Link href={`/posts/${id}`} className="block">
-        <h2 className="mb-1 text-sm font-semibold text-gray-900">{title}</h2>
+        <h2 className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-gray-900">
+          {hasPoll && <PollIcon />}
+          {title}
+        </h2>
         <p className="line-clamp-3 text-sm leading-relaxed whitespace-pre-line text-gray-700">
           {content}
         </p>

@@ -28,7 +28,7 @@ export default async function MyPage() {
     supabase
       .from("posts")
       .select(
-        "id, title, content, created_at, likes(user_id), comments(id, deleted_at)",
+        "id, title, content, created_at, likes(user_id), comments(id, deleted_at), polls(id)",
       )
       .eq("user_id", user.id)
       .order("created_at", { ascending: false }),
@@ -89,6 +89,7 @@ export default async function MyPage() {
                     post.comments?.filter((c) => c.deleted_at === null)
                       .length ?? 0
                   }
+                  hasPoll={(post.polls?.length ?? 0) > 0}
                 />
               );
             })}
