@@ -5,7 +5,7 @@ export default function CommentIcon() {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#7C6F63"
+      stroke="var(--color-ink-600)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

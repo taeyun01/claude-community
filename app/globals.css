@@ -37,25 +37,27 @@
 }
 
 /* 다크모드: prefers-color-scheme이 아니라 설정 탭에서 고른 값(html[data-theme])만 따름.
-   기본값은 라이트모드이고, /settings의 토글이 이 attribute와 theme 쿠키를 함께 설정함 */
+   기본값은 라이트모드이고, /settings의 토글이 이 attribute와 theme 쿠키를 함께 설정함.
+   실제 검은색에 가깝게: surface/gray-100을 거의 무채색 near-black으로, 다른 톤들은
+   그 위에서 구분되는 정도로만 사용 (이전엔 갈색 톤이 너무 강했음) */
 :root[data-theme="dark"] {
-  --background: #14100d;
-  --foreground: #f3ece3;
+  --background: #0a0908;
+  --foreground: #f0ece7;
 
-  --color-gray-100: #241d17;
-  --color-gray-400: #6e6255;
-  --color-gray-500: #9c8f81;
-  --color-gray-700: #c9bcae;
-  --color-gray-900: #f3ece3;
+  --color-gray-100: #050504;
+  --color-gray-400: #6b6259;
+  --color-gray-500: #8f867c;
+  --color-gray-700: #c4bcb2;
+  --color-gray-900: #f0ece7;
 
-  --color-brand-100: #3a2419;
-  --color-brand-200: #5a3420;
-  --color-brand-300: #8a4a2a;
+  --color-brand-100: #241611;
+  --color-brand-200: #45281a;
+  --color-brand-300: #7a4321;
   --color-brand-600: #ff6b57;
 
-  --color-surface: #1e1812;
-  --color-line: #3a2f24;
-  --color-ink-900: #f3ece3;
-  --color-ink-600: #b4a99b;
-  --color-field: #241d17;
+  --color-surface: #121110;
+  --color-line: #2a2724;
+  --color-ink-900: #f0ece7;
+  --color-ink-600: #9c948a;
+  --color-field: #1a1815;
 }
