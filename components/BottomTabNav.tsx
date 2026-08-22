@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import type { SVGProps } from "react";
 
 const ACTIVE_COLOR = "#FF6B57";
-const INACTIVE_COLOR = "#7C6F63";
+const INACTIVE_COLOR = "var(--color-ink-600)";
 
 type IconProps = { active: boolean };
 

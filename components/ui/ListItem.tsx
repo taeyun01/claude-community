@@ -21,7 +21,7 @@ export default function ListItem({
         height="16"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#B6B6B6"
+        stroke="var(--color-ink-600)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

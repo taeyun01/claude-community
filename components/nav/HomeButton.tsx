@@ -12,7 +12,7 @@ export default function HomeButton() {
         height="20"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#161616"
+        stroke="var(--color-ink-900)"
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"

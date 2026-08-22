@@ -5,7 +5,7 @@ export default function HeartIcon({ filled }: { filled: boolean }) {
       height="24"
       viewBox="0 0 24 24"
       fill={filled ? "#FF6B57" : "none"}
-      stroke={filled ? "#FF6B57" : "#6B7280"}
+      stroke={filled ? "#FF6B57" : "var(--color-ink-600)"}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

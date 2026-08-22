@@ -21,7 +21,7 @@ export default function BottomSheet({
         onClick={onClose}
         className="absolute inset-0 bg-black/40"
       />
-      <div className="relative z-10 w-full rounded-t-2xl bg-white pt-2 pb-6">
+      <div className="bg-surface relative z-10 w-full rounded-t-2xl pt-2 pb-6">
         {children}
       </div>
     </div>

@@ -129,7 +129,7 @@ export default function PollCard({
                 }
               }}
               disabled={isLoggedIn && !isMine}
-              className="border-line relative w-full cursor-pointer overflow-hidden rounded-xl border bg-[#FAF6F2] px-4 py-3 text-left disabled:cursor-default"
+              className="border-line bg-field relative w-full cursor-pointer overflow-hidden rounded-xl border px-4 py-3 text-left disabled:cursor-default"
             >
               <div
                 className="bg-brand-200 absolute inset-y-0 left-0"
