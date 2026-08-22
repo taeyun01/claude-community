@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/nav/Header";
 import PostMenu from "@/components/post/PostMenu";
@@ -28,7 +29,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
         "id, content, created_at, deleted_at, user_id, profiles(nickname, avatar_url)",
       )
       .eq("post_id", id)
-      .order("created_at", { ascending: true }),
+      .order("created_at", { ascending: false }),
     getCurrentUser(),
   ]);
 
@@ -73,7 +74,10 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
       />
       <div className="flex-1 overflow-y-auto pb-24">
         <div className="flex flex-col gap-4 px-4 pt-6">
-          <div className="flex items-center gap-2">
+          <Link
+            href={`/profile/${post.user_id}`}
+            className="flex w-fit items-center gap-2"
+          >
             {authorAvatarUrl ? (
               <Image
                 src={authorAvatarUrl}
@@ -95,7 +99,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
                 {formatRelativeTime(post.created_at)}
               </span>
             </div>
-          </div>
+          </Link>
           <h1 className="text-lg font-semibold text-gray-900">{post.title}</h1>
           <p className="text-sm leading-relaxed whitespace-pre-line text-gray-700">
             {post.content}

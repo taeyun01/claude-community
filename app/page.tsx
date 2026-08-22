@@ -9,7 +9,7 @@ export default async function HomePage() {
     supabase
       .from("posts")
       .select(
-        "id, title, content, created_at, profiles(nickname, avatar_url), likes(user_id), comments(id, deleted_at)",
+        "id, title, content, created_at, user_id, profiles(nickname, avatar_url), likes(user_id), comments(id, deleted_at)",
       )
       .order("created_at", { ascending: false }),
     getCurrentUser(),
@@ -26,6 +26,7 @@ export default async function HomePage() {
               <FeedItem
                 key={post.id}
                 id={post.id}
+                authorId={post.user_id}
                 title={post.title}
                 content={post.content}
                 createdAt={post.created_at}

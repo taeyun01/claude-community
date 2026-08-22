@@ -1,18 +1,19 @@
+import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/nav/Header";
-import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
 import FeedItem from "@/components/post/FeedItem";
+import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
 import { getCurrentUser } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function MyPage() {
+export default async function ProfilePage(props: PageProps<"/profile/[id]">) {
+  const { id } = await props.params;
   const user = await getCurrentUser();
 
   if (!user) {
     return (
       <div className="flex h-full flex-col">
-        <Header title="내 정보" showBack={false} />
+        <Header title="" />
         <RequireLoginDialog />
       </div>
     );
@@ -23,23 +24,27 @@ export default async function MyPage() {
     supabase
       .from("profiles")
       .select("nickname, avatar_url")
-      .eq("id", user.id)
+      .eq("id", id)
       .maybeSingle(),
     supabase
       .from("posts")
       .select(
         "id, title, content, created_at, likes(user_id), comments(id, deleted_at)",
       )
-      .eq("user_id", user.id)
+      .eq("user_id", id)
       .order("created_at", { ascending: false }),
   ]);
 
-  const nickname = profile?.nickname ?? "알 수 없음";
-  const avatarUrl = profile?.avatar_url ?? null;
+  if (!profile) {
+    notFound();
+  }
+
+  const nickname = profile.nickname;
+  const avatarUrl = profile.avatar_url;
 
   return (
     <div className="flex h-full flex-col">
-      <Header title="내 정보" showBack={false} />
+      <Header title="" />
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col items-center gap-3 px-4 py-8">
           {avatarUrl ? (
@@ -58,15 +63,9 @@ export default async function MyPage() {
           <span className="font-poppins text-lg font-semibold text-gray-900">
             {nickname}
           </span>
-          <Link
-            href="/my/edit"
-            className="rounded-full border border-brand-600 px-3 py-1 text-xs font-medium text-brand-600"
-          >
-            프로필 수정
-          </Link>
         </div>
         <div className="border-t border-[#EBEBEB] px-4 pt-4 pb-2">
-          <h2 className="text-sm font-semibold text-gray-700">내가 쓴 글</h2>
+          <h2 className="text-sm font-semibold text-gray-700">작성한 글</h2>
         </div>
         {posts && posts.length > 0 ? (
           <div className="flex flex-col gap-8 py-4">
@@ -76,7 +75,7 @@ export default async function MyPage() {
                 <FeedItem
                   key={post.id}
                   id={post.id}
-                  authorId={user.id}
+                  authorId={id}
                   title={post.title}
                   content={post.content}
                   createdAt={post.created_at}

@@ -56,7 +56,7 @@ const TABS = [
 ] as const;
 
 // 회원가입/로그인/글쓰기 등은 하단 탭 없이 단독으로 노출됨 (design.md Signup/Login/Feed-Write 프레임 참고)
-const HIDDEN_ROUTES = ["/signup", "/login", "/posts"];
+const HIDDEN_ROUTES = ["/signup", "/login", "/posts", "/my/edit"];
 
 export default function BottomTabNav() {
   const pathname = usePathname();
