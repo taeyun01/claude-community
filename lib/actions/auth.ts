@@ -55,6 +55,11 @@ export async function signUp(
     if (error.code === "weak_password") {
       return { errors: { password: ["비밀번호가 너무 취약합니다."] } };
     }
+    // profiles.nickname is created via the on_auth_user_created trigger, so a race-condition
+    // unique violation surfaces here as a generic AuthError, not a Postgrest 23505 error code.
+    if (error.message.toLowerCase().includes("nickname")) {
+      return { errors: { nickname: ["이미 사용 중인 닉네임입니다."] } };
+    }
     return { message: "가입 중 오류가 발생했습니다. 다시 시도해주세요." };
   }
 
@@ -69,7 +74,12 @@ export async function signUp(
 
 export async function signOut() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    redirect("/settings");
+  }
+
   redirect("/");
 }
 
@@ -81,7 +91,19 @@ export type LoginState = {
   message?: string;
 };
 
+function getSafeRedirect(redirectTo: string | undefined): string {
+  if (
+    redirectTo &&
+    redirectTo.startsWith("/") &&
+    !redirectTo.startsWith("//")
+  ) {
+    return redirectTo;
+  }
+  return "/";
+}
+
 export async function signIn(
+  redirectTo: string | undefined,
   _prevState: LoginState,
   formData: FormData,
 ): Promise<LoginState> {
@@ -109,5 +131,5 @@ export async function signIn(
     return { message: "이메일 또는 비밀번호가 일치하지 않습니다." };
   }
 
-  redirect("/");
+  redirect(getSafeRedirect(redirectTo));
 }

@@ -9,8 +9,9 @@ import { signIn, type LoginState } from "@/lib/actions/auth";
 
 const initialState: LoginState = {};
 
-export default function LoginForm() {
-  const [state, formAction, pending] = useActionState(signIn, initialState);
+export default function LoginForm({ redirectTo }: { redirectTo?: string }) {
+  const action = signIn.bind(null, redirectTo);
+  const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
     <form action={formAction} className="flex flex-1 flex-col">

@@ -10,6 +10,7 @@ export const signupSchema = z
     passwordConfirm: z.string().min(1, "비밀번호 확인을 입력해주세요."),
     nickname: z
       .string()
+      .trim()
       .min(2, "닉네임은 2자 이상이어야 합니다.")
       .max(20, "닉네임은 20자 이하여야 합니다."),
   })

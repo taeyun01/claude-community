@@ -19,10 +19,14 @@ export async function toggleLike(postId: string) {
     .eq("user_id", user.id)
     .maybeSingle();
 
-  if (existing) {
-    await supabase.from("likes").delete().eq("id", existing.id);
-  } else {
-    await supabase.from("likes").insert({ post_id: postId, user_id: user.id });
+  const { error } = existing
+    ? await supabase.from("likes").delete().eq("id", existing.id)
+    : await supabase
+        .from("likes")
+        .insert({ post_id: postId, user_id: user.id });
+
+  if (error) {
+    return;
   }
 
   revalidatePath(`/posts/${postId}`);

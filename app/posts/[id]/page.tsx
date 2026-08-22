@@ -7,7 +7,6 @@ import LikeButton from "@/components/post/LikeButton";
 import CommentIcon from "@/components/comment/CommentIcon";
 import CommentList from "@/components/comment/CommentList";
 import CommentInput from "@/components/comment/CommentInput";
-import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
 import { formatRelativeTime } from "@/lib/formatRelativeTime";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/dal";
@@ -37,21 +36,13 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
     notFound();
   }
 
-  if (!user) {
-    return (
-      <div className="flex h-full flex-col">
-        <Header title="" backHref="/" />
-        <RequireLoginDialog />
-      </div>
-    );
-  }
-
   const authorNickname = post.profiles?.nickname ?? "알 수 없음";
   const authorAvatarUrl = post.profiles?.avatar_url ?? null;
-  const isOwner = user?.id === post.user_id;
+  const isLoggedIn = !!user;
+  const isOwner = !!user && user.id === post.user_id;
   const likeUserIds = post.likes?.map((like) => like.user_id) ?? [];
   const likeCount = likeUserIds.length;
-  const isLiked = likeUserIds.includes(user.id);
+  const isLiked = !!user && likeUserIds.includes(user.id);
   const commentList = (comments ?? []).map((comment) => ({
     id: comment.id,
     content: comment.content,
@@ -59,7 +50,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
     deleted_at: comment.deleted_at,
     authorNickname: comment.profiles?.nickname ?? "알 수 없음",
     authorAvatarUrl: comment.profiles?.avatar_url ?? null,
-    isOwner: comment.user_id === user.id,
+    isOwner: !!user && comment.user_id === user.id,
   }));
   const visibleCommentCount = commentList.filter(
     (comment) => comment.deleted_at === null,
@@ -109,6 +100,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
               postId={post.id}
               initialLiked={isLiked}
               initialCount={likeCount}
+              isLoggedIn={isLoggedIn}
             />
             <div className="flex items-center gap-1.5">
               <CommentIcon />
@@ -124,7 +116,7 @@ export default async function PostDetailPage(props: PageProps<"/posts/[id]">) {
           <CommentList postId={post.id} comments={commentList} />
         </div>
       </div>
-      <CommentInput postId={post.id} />
+      <CommentInput postId={post.id} isLoggedIn={isLoggedIn} />
     </div>
   );
 }

@@ -60,10 +60,14 @@ export async function deleteComment(commentId: string, postId: string) {
     return;
   }
 
-  await supabase
+  const { error } = await supabase
     .from("comments")
     .update({ deleted_at: new Date().toISOString() })
     .eq("id", commentId);
+
+  if (error) {
+    return;
+  }
 
   revalidatePath(`/posts/${postId}`);
 }

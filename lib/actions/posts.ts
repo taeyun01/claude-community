@@ -107,7 +107,11 @@ export async function deletePost(postId: string) {
     redirect(`/posts/${postId}`);
   }
 
-  await supabase.from("posts").delete().eq("id", postId);
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+
+  if (error) {
+    redirect(`/posts/${postId}`);
+  }
 
   redirect("/");
 }

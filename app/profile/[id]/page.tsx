@@ -2,22 +2,13 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Header from "@/components/nav/Header";
 import FeedItem from "@/components/post/FeedItem";
-import RequireLoginDialog from "@/components/auth/RequireLoginDialog";
 import { getCurrentUser } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function ProfilePage(props: PageProps<"/profile/[id]">) {
   const { id } = await props.params;
   const user = await getCurrentUser();
-
-  if (!user) {
-    return (
-      <div className="flex h-full flex-col">
-        <Header title="" />
-        <RequireLoginDialog />
-      </div>
-    );
-  }
+  const isLoggedIn = !!user;
 
   const supabase = await createClient();
   const [{ data: profile }, { data: posts }] = await Promise.all([
@@ -81,8 +72,8 @@ export default async function ProfilePage(props: PageProps<"/profile/[id]">) {
                   createdAt={post.created_at}
                   authorNickname={nickname}
                   authorAvatarUrl={avatarUrl}
-                  isLoggedIn
-                  initialLiked={likeUserIds.includes(user.id)}
+                  isLoggedIn={isLoggedIn}
+                  initialLiked={!!user && likeUserIds.includes(user.id)}
                   initialCount={likeUserIds.length}
                   commentCount={
                     post.comments?.filter((c) => c.deleted_at === null)

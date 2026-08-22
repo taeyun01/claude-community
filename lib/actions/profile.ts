@@ -84,6 +84,9 @@ export async function updateProfile(
     .eq("id", user.id);
 
   if (error) {
+    if (error.code === "23505") {
+      return { errors: { nickname: ["이미 사용 중인 닉네임입니다."] } };
+    }
     return {
       message: "프로필 수정 중 오류가 발생했습니다. 다시 시도해주세요.",
     };
