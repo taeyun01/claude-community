@@ -16,6 +16,7 @@ export type FeedPost = {
   likeCount: number;
   isLiked: boolean;
   commentCount: number;
+  hasPoll: boolean;
 };
 
 function escapeIlikeFilterValue(value: string): string {
@@ -32,7 +33,7 @@ export async function fetchFeedPosts(
   let query = supabase
     .from("posts")
     .select(
-      "id, title, content, created_at, user_id, profiles(nickname, avatar_url), likes(user_id), comments(id, deleted_at)",
+      "id, title, content, created_at, user_id, profiles(nickname, avatar_url), likes(user_id), comments(id, deleted_at), polls(id)",
     )
     .order("created_at", { ascending: false })
     .limit(FEED_PAGE_SIZE);
@@ -64,6 +65,7 @@ export async function fetchFeedPosts(
       isLiked: !!user && likeUserIds.includes(user.id),
       commentCount:
         post.comments?.filter((c) => c.deleted_at === null).length ?? 0,
+      hasPoll: (post.polls?.length ?? 0) > 0,
     };
   });
 

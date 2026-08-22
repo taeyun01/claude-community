@@ -71,6 +71,7 @@ export default function HomeFeed({
           initialLiked={post.isLiked}
           initialCount={post.likeCount}
           commentCount={post.commentCount}
+          hasPoll={post.hasPoll}
         />
       ))}
       <div ref={sentinelRef} />
