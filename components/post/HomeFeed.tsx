@@ -56,7 +56,7 @@ export default function HomeFeed({
   }
 
   return (
-    <div className="flex flex-col gap-8 py-6">
+    <div className="flex flex-col gap-4 py-4">
       {posts.map((post) => (
         <FeedItem
           key={post.id}

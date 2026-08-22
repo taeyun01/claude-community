@@ -26,8 +26,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ko"
       className={`${ibmPlexSans.variable} ${poppins.variable} antialiased`}
     >
-      <body className="min-h-screen bg-gray-100 flex justify-center">
-        <div className="relative flex min-h-screen w-full max-w-md flex-col bg-white">
+      <body className="flex min-h-screen justify-center bg-gray-100">
+        <div className="bg-surface relative flex min-h-screen w-full max-w-md flex-col">
           <div className="flex-1 pb-[82px]">{children}</div>
           <BottomTabNav />
         </div>

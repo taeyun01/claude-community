@@ -71,10 +71,10 @@ export default function PostForm({
         />
         {mode === "create" &&
           (pollEnabled ? (
-            <div className="flex flex-col gap-3 rounded-2xl border border-[#EBEBEB] p-4">
+            <div className="border-line bg-surface flex flex-col gap-3 rounded-2xl border p-4">
               <input type="hidden" name="pollEnabled" value="true" />
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-ink-900 font-poppins text-sm font-semibold">
                   투표
                 </span>
                 <button
@@ -84,7 +84,7 @@ export default function PostForm({
                     setPollQuestion("");
                     setPollOptions(["", ""]);
                   }}
-                  className="cursor-pointer text-xs text-gray-500"
+                  className="text-ink-600 cursor-pointer text-xs"
                 >
                   삭제
                 </button>

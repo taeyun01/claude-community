@@ -92,8 +92,10 @@ export default function PollCard({
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-[#EBEBEB] p-4">
-      <p className="text-sm font-semibold text-gray-900">{question}</p>
+    <div className="border-line bg-surface shadow-card flex flex-col gap-3 rounded-2xl border p-4">
+      <p className="text-ink-900 font-poppins text-sm font-semibold">
+        {question}
+      </p>
       <div className="flex flex-col gap-2">
         {optionCounts.map((option) => {
           const percent =
@@ -106,7 +108,7 @@ export default function PollCard({
                 key={option.id}
                 type="button"
                 onClick={() => handleVote(option.id)}
-                className="w-full cursor-pointer rounded-xl border border-[#EBEBEB] px-4 py-3 text-left text-sm text-gray-900 hover:border-brand-600"
+                className="border-line text-ink-900 hover:border-brand-600 w-full cursor-pointer rounded-xl border px-4 py-3 text-left text-sm"
               >
                 {option.label}
               </button>
@@ -127,18 +129,18 @@ export default function PollCard({
                 }
               }}
               disabled={isLoggedIn && !isMine}
-              className="relative w-full cursor-pointer overflow-hidden rounded-xl border border-[#EBEBEB] bg-[#F6F6F6] px-4 py-3 text-left disabled:cursor-default"
+              className="border-line relative w-full cursor-pointer overflow-hidden rounded-xl border bg-[#FAF6F2] px-4 py-3 text-left disabled:cursor-default"
             >
               <div
-                className="absolute inset-y-0 left-0 bg-brand-200"
+                className="bg-brand-200 absolute inset-y-0 left-0"
                 style={{ width: `${percent}%` }}
               />
               <div className="relative flex items-center justify-between gap-2">
-                <span className="flex items-center gap-1.5 text-sm text-gray-900">
+                <span className="text-ink-900 flex items-center gap-1.5 text-sm">
                   {isMine && <CheckIcon />}
                   {option.label}
                 </span>
-                <span className="shrink-0 text-sm font-semibold text-gray-700">
+                <span className="text-ink-900 shrink-0 text-sm font-semibold">
                   {percent}%
                 </span>
               </div>
@@ -146,7 +148,7 @@ export default function PollCard({
           );
         })}
       </div>
-      <p className="text-xs text-gray-500">{voteCount}명 참여</p>
+      <p className="text-ink-600 text-xs">{voteCount}명 참여</p>
       {showLoginDialog && (
         <RequireLoginDialog onCancel={() => setShowLoginDialog(false)} />
       )}

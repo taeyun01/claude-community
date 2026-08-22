@@ -30,7 +30,7 @@ export default function Header({
   const router = useRouter();
 
   return (
-    <header className="flex h-14 items-center border-b border-[#EBEBEB] px-4">
+    <header className="border-line bg-surface flex h-14 items-center border-b px-4">
       {leftSlot ? (
         leftSlot
       ) : showBack ? (
@@ -45,7 +45,7 @@ export default function Header({
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#161616"
+            stroke="#241C17"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -56,7 +56,7 @@ export default function Header({
       ) : (
         <div className="w-8" />
       )}
-      <h1 className="font-poppins flex-1 text-center text-base font-semibold text-gray-900">
+      <h1 className="text-ink-900 font-poppins flex-1 text-center text-base font-semibold">
         {title}
       </h1>
       {rightSlot ? (

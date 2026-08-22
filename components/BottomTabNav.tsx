@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import type { SVGProps } from "react";
 
 const ACTIVE_COLOR = "#FF6B57";
-const INACTIVE_COLOR = "#6B7280";
+const INACTIVE_COLOR = "#7C6F63";
 
 type IconProps = { active: boolean };
 
@@ -66,7 +66,7 @@ export default function BottomTabNav() {
   }
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-10 mx-auto flex h-[82px] w-full max-w-md items-start justify-around border-t border-[#EBEBEB] bg-white pt-2">
+    <nav className="border-line bg-surface fixed inset-x-0 bottom-0 z-10 mx-auto flex h-[82px] w-full max-w-md items-start justify-around border-t pt-2">
       {TABS.map(({ href, label, Icon }) => {
         const active =
           href === "/" ? pathname === "/" : pathname.startsWith(href);

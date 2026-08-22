@@ -19,14 +19,14 @@ export default function CommentList({
 }) {
   if (comments.length === 0) {
     return (
-      <p className="px-4 py-4 text-sm text-gray-500">
+      <p className="text-ink-600 px-4 py-4 text-sm">
         아직 댓글이 없어요. 첫 댓글을 남겨보세요.
       </p>
     );
   }
 
   return (
-    <div className="flex flex-col divide-y divide-[#EBEBEB]">
+    <div className="divide-line flex flex-col divide-y">
       {comments.map((comment) => (
         <CommentItem
           key={comment.id}

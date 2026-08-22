@@ -52,11 +52,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   className="h-8 w-8 rounded-full object-cover"
                 />
               ) : (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-xs font-semibold text-brand-600">
+                <div className="from-brand-100 to-brand-200 ring-brand-200 text-brand-600 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-xs font-semibold ring-1">
                   {myNickname.slice(0, 1)}
                 </div>
               )}
-              <span className="font-poppins text-sm font-semibold text-gray-900">
+              <span className="text-ink-900 font-poppins text-sm font-semibold">
                 {myNickname}
               </span>
             </Link>
