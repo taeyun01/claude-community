@@ -73,6 +73,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         initialNextCursor={nextCursor}
         keyword={keyword}
         isLoggedIn={isLoggedIn}
+        currentUserId={user?.id ?? null}
       />
       <WriteButton />
     </div>
