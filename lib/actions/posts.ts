@@ -104,10 +104,36 @@ export async function updatePost(
     return { errors: validated.error.flatten().fieldErrors };
   }
 
+  const pollEnabled = formData.get("pollEnabled") === "true";
+  const pollQuestion = String(formData.get("pollQuestion") ?? "").trim();
+  const pollOptionIds = formData.getAll("pollOptionIds").map(String);
+  const pollOptionLabels = formData
+    .getAll("pollOptions")
+    .map((value) => String(value).trim());
+  const pollOptionPairs = pollOptionLabels
+    .map((label, index) => ({
+      id: pollOptionIds[index] || null,
+      label,
+    }))
+    .filter((pair) => pair.label.length > 0);
+
+  if (pollEnabled) {
+    const errors: NonNullable<PostState["errors"]> = {};
+    if (!pollQuestion) {
+      errors.pollQuestion = ["투표 질문을 입력해주세요."];
+    }
+    if (pollOptionPairs.length < 2) {
+      errors.pollOptions = ["선택지를 2개 이상 입력해주세요."];
+    }
+    if (Object.keys(errors).length > 0) {
+      return { errors };
+    }
+  }
+
   const supabase = await createClient();
   const { data: existing } = await supabase
     .from("posts")
-    .select("user_id")
+    .select("user_id, polls(id, poll_options(id))")
     .eq("id", postId)
     .maybeSingle();
 
@@ -125,6 +151,68 @@ export async function updatePost(
 
   if (error) {
     return { message: "글 수정 중 오류가 발생했습니다. 다시 시도해주세요." };
+  }
+
+  const existingPoll = existing.polls?.[0] ?? null;
+
+  if (pollEnabled) {
+    if (!existingPoll) {
+      const { data: poll } = await supabase
+        .from("polls")
+        .insert({ post_id: postId, question: pollQuestion })
+        .select("id")
+        .single();
+
+      if (poll) {
+        await supabase.from("poll_options").insert(
+          pollOptionPairs.map((pair) => ({
+            poll_id: poll.id,
+            label: pair.label,
+          })),
+        );
+      }
+    } else {
+      await supabase
+        .from("polls")
+        .update({ question: pollQuestion })
+        .eq("id", existingPoll.id);
+
+      const keptIds = new Set(
+        pollOptionPairs
+          .map((pair) => pair.id)
+          .filter((id): id is string => !!id),
+      );
+      const idsToDelete = existingPoll.poll_options
+        .map((option) => option.id)
+        .filter((id) => !keptIds.has(id));
+
+      if (idsToDelete.length > 0) {
+        await supabase.from("poll_options").delete().in("id", idsToDelete);
+      }
+
+      const newOptions = pollOptionPairs.filter((pair) => !pair.id);
+      if (newOptions.length > 0) {
+        await supabase.from("poll_options").insert(
+          newOptions.map((pair) => ({
+            poll_id: existingPoll.id,
+            label: pair.label,
+          })),
+        );
+      }
+
+      await Promise.all(
+        pollOptionPairs
+          .filter((pair) => pair.id)
+          .map((pair) =>
+            supabase
+              .from("poll_options")
+              .update({ label: pair.label })
+              .eq("id", pair.id as string),
+          ),
+      );
+    }
+  } else if (existingPoll) {
+    await supabase.from("polls").delete().eq("id", existingPoll.id);
   }
 
   redirect(`/posts/${postId}`);
