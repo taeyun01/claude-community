@@ -15,7 +15,9 @@ export default async function EditPostPage(
   const supabase = await createClient();
   const { data: post } = await supabase
     .from("posts")
-    .select("id, title, content, user_id")
+    .select(
+      "id, title, content, user_id, polls(id, question, poll_options(id, label, created_at))",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -27,12 +29,24 @@ export default async function EditPostPage(
     redirect(`/posts/${id}`);
   }
 
+  const poll = post.polls?.[0] ?? null;
+  const initialPoll = poll
+    ? {
+        question: poll.question,
+        options: poll.poll_options
+          .slice()
+          .sort((a, b) => a.created_at.localeCompare(b.created_at))
+          .map((option) => ({ id: option.id, label: option.label })),
+      }
+    : null;
+
   return (
     <PostForm
       mode="edit"
       postId={post.id}
       initialTitle={post.title}
       initialContent={post.content}
+      initialPoll={initialPoll}
     />
   );
 }
